@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 VOLUME_HOME="/var/lib/mysql"
@@ -11,11 +10,13 @@ if [[ ! -d $VOLUME_HOME/mysql ]]; then
     mysql_install_db > /dev/null 2>&1
     echo "=> Done!"  
     /create_mysql_admin_user.sh
-    service mysql start
-    mysql -u root < /import.sql
+    
 else
     echo "=> Using an existing volume of MySQL"
+    service mysql start
+    mysql < /import.sql
+    cd /usr/bin/rathena
+    ./athena-start start
 fi
-
 
 exec supervisord -n
