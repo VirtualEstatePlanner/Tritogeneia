@@ -1,4 +1,4 @@
-CREATE DATABASE ragnarok; 
+CREATE DATABASE ragnarok;
 CREATE USER ragnarok@localhost IDENTIFIED BY 'ragnarok';
 GRANT ALL PRIVILEGES ON ragnarok.* to ragnarok@localhost IDENTIFIED BY 'ragnarok';
 flush privileges;
