@@ -44,7 +44,6 @@
                                            php5-mysql \
                                            php-apc \
                                            php5-mcrypt \
-                                           supervisor \
                                            zlib1g-dev
 
 # add necessary files
@@ -56,13 +55,8 @@
         ADD my.cnf /etc/mysql/conf.d/
 ### 12
         ADD boottime.sh /
+
 ### 13
-        ADD supervisord-apache2.conf /etc/supervisor/conf.d/
-### 14
-        ADD supervisord-mysqld.conf /etc/supervisor/conf.d/
-
-
-### 15
 # add the ‘localhost’ hostname to the apache2 configs
         RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf \
 
@@ -103,17 +97,21 @@
          && service apache2 restart \
          && service apache2 stop
 
-### 16
+### 14
 # Environment variables to configure php
         ENV PHP_UPLOAD_MAX_FILESIZE 10M
 
-### 17
+### 15
         ENV PHP_POST_MAX_SIZE 10M
 
-### 18
+### 16
 # Add volumes to be shared to host for configuration file access
      VOLUME /etc/mysql /var/lib/mysql /usr/bin/rathena/conf
 
-### 19
+### 17
 # open ports for network access
      EXPOSE 80 443 3306 5121 6121 6900
+
+# use this container with a command like:
+
+# docker run —i -t -p 20000:22 -p 20001:443 -p 20002:3306 -p 20003:5121 -p 20004:6121 -p 20005:6900 --name Aegis georgegeorgulasiv/tritogeneia
