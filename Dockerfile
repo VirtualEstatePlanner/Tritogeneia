@@ -1,19 +1,29 @@
-# this is a Dockerfile to build an auto-starting docker container that runs the entire rAthena stack including FluxCP to manage access to the server from a website.
-
+# this is a Dockerfile to build an auto-starting docker container of an entire rAthena stack including FluxCP to manage access to the server from a website.
+### 0
        FROM ubuntu
 
+### 1
  MAINTAINER George Georgulas IV <georgegeorgulasiv@gmail.com>
 
+### 2
         CMD bash
 
- ENTRYPOINT /run.sh
+### 3
+ ENTRYPOINT /boottime.sh
 
+### 4
        USER root
 
+### 5
         ENV HOME /root
 
+### 6
         ENV DEBIAN_FRONTEND noninteractive
+### 7
+# work in the /usr/bin/rathena directory (for when we configure and make later)
+    WORKDIR /usr/bin/rathena/
 
+### 8
 # update apt repositories
         RUN apt-get update \
 
@@ -21,75 +31,89 @@
          && apt-get -y dist-upgrade \
 
 # install all of our packages, auto-agree (-y)
-         && apt-get -y install \
-            apache2 \
-            gcc \
-            git \
-            libapache2-mod-php5 \
-            libmysqlclient-dev \
-            libpcre3-dev \
-            make \
-            mysql-client \
-            mysql-server \
-            php5-mysql \
-            pwgen \
-            php-apc \
-            php5-mcrypt \
-            supervisor \
-            zlib1g-dev \
+         && apt-get -y --force-yes install \
+                                           apache2 \
+                                           gcc \
+                                           git \
+                                           libapache2-mod-php5 \
+                                           libmysqlclient-dev \
+                                           libpcre3-dev \
+                                           make \
+                                           mysql-client \
+                                           mysql-server \
+                                           php5-mysql \
+                                           php-apc \
+                                           php5-mcrypt \
+                                           supervisor \
+                                           zlib1g-dev
 
+# add necessary files
+### 9
+        ADD 000-default.conf /etc/apache2/sites-available/
+### 10
+        ADD import.sql /
+### 11
+        ADD my.cnf /etc/mysql/conf.d/
+### 12
+        ADD boottime.sh /
+### 13
+        ADD supervisord-apache2.conf /etc/supervisor/conf.d/
+### 14
+        ADD supervisord-mysqld.conf /etc/supervisor/conf.d/
+
+
+### 15
 # add the ‘localhost’ hostname to the apache2 configs
-         && echo "ServerName localhost" >> /etc/apache2/apache2.conf \
+        RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf \
 
-# Clone FluxCP to /var/www/html from github
+# clone FluxCP to /var/www/html from github
          && rm -fr /var/www/html \
          && git clone https://github.com/rathena/FluxCP.git /var/www/html \
 
-# Clone rAthena into /usr/bin/rathena from github
-         && git clone https://github.com/rathena/rathena.git /usr/bin/rathena
+# clone rAthena into /usr/bin/rathena from github
+         && git clone https://github.com/rathena/rathena.git /usr/bin/rathena \
 
 # configure make and select packet version 
-    WORKDIR /usr/bin/rathena/
-        RUN ./configure --enable-packetver=20131223 \
+
+         && ./configure --enable-packetver=20131223 \
 
 # compile rAthena server binaries
          && make server \
 
-# chmod server binaries to be executable by anyone
-         && chmod a+x *-server athena-start
-
-# add necessary files
-        ADD import.sql /
-        ADD start-apache2.sh /start-apache2.sh
-        ADD start-mysqld.sh /start-mysqld.sh
-        ADD run.sh /run.sh
-        ADD my.cnf /etc/mysql/conf.d/my.cnf
-        ADD supervisord-apache2.conf /etc/supervisor/conf.d/supervisord-apache2.conf
-        ADD supervisord-mysqld.conf /etc/supervisor/conf.d/supervisord-mysqld.conf
-        ADD create_mysql_admin_user.sh /create_mysql_admin_user.sh
-        ADD apache_default /etc/apache2/sites-available/000-default.conf
-
-# import rAthena mysql default database files
-        RUN service mysql start \
+# import rAthena mysql files by (tell me there’s a better way)
+#   starting the mysql service
+         && service mysql start \
+#   importing the list of .sql files from the rAthena git pullfile)
          && mysql < /import.sql \
+#   stopping the mysql service
          && service mysql stop \
+#   and cleaning up after ourselves by removing the list
+         && rm -f /import.sql \
 
-# remove developer tools
-         && apt-get -y remove gcc git make
-    WORKDIR /
+# uninstall the developer tools, auto-agree (-y)
+         && apt-get -y remove gcc git make \
 
-# chmod scripts at root level of hdd to be executable by anyone
-        RUN chmod a+x /*.sh
+# chmod the rAthena server binaries and boottime.sh to be executable by anyone
+         && chmod a+x /usr/bin/rathena/*-server \
+                      /usr/bin/rathena/athena-start \
+                      /boottime.sh \
 
-# config to enable .htaccess
-        RUN a2enmod rewrite
+# configure apache to use .htaccess
+         && a2enmod rewrite \
+         && service apache2 restart \
+         && service apache2 stop
 
+### 16
 # Environment variables to configure php
         ENV PHP_UPLOAD_MAX_FILESIZE 10M
+
+### 17
         ENV PHP_POST_MAX_SIZE 10M
 
-# Add volumes to be shared to host for configuration
+### 18
+# Add volumes to be shared to host for configuration file access
      VOLUME /etc/mysql /var/lib/mysql /usr/bin/rathena/conf
 
+### 19
 # open ports for network access
      EXPOSE 80 443 3306 5121 6121 6900
