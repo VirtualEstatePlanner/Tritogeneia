@@ -4,22 +4,19 @@
 ### 1
  MAINTAINER George Georgulas IV <georgegeorgulasiv@gmail.com>
 ### 2
-# Add volumes to be shared to host for configuration file access
-     VOLUME  /etc/apache /etc/mysql /etc/php /usr/bin/rathena /var/lib/mysql /var/www/html
-### 3
         CMD bash
-### 4
+### 3
  ENTRYPOINT /boottime.sh
-### 5
+### 4
        USER root
-### 6
+### 5
         ENV HOME /root
-### 7
+### 6
         ENV DEBIAN_FRONTEND noninteractive
-### 8
+### 7
 # work in the /usr/bin/rathena directory (for when we configure and make later)
     WORKDIR /usr/bin/rathena/
-### 9
+### 8
 # update apt repositories
         RUN apt-get update \
 # upgrade the ubuntu image you pulled from with the most current libs, auto-agree (-y)
@@ -41,15 +38,15 @@
 			zlib1g-dev
 			
 # add necessary files
-### 10
+### 9
         ADD 000-default.conf /etc/apache2/sites-available/
-### 11
+### 10
         ADD import.sql /
-### 12
+### 11
         ADD my.cnf /etc/mysql/conf.d/
-### 13
+### 12
         ADD boottime.sh /
-### 14
+### 13
 # add the ‘localhost’ hostname to the apache2 configs
         RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf \
 # clone FluxCP to /var/www/html from github
@@ -83,16 +80,15 @@
          && service apache2 restart \
          && service apache2 stop
 # Environment variables to configure php
-### 15
+### 14
         ENV PHP_UPLOAD_MAX_FILESIZE 10M
-### 16
+### 15
         ENV PHP_POST_MAX_SIZE 10M
+### 16
+# Add volumes to be shared to host for configuration file access
+     VOLUME /etc/mysql /var/lib/mysql /usr/bin/rathena/conf
 ### 17
-### 18
 # open ports for network access
      EXPOSE 80 443 3306 5121 6121 6900
-
-
-# launch this container with a command something like this one:
-
-# docker run -it -v ~/Desktop/ROServer/etc-apache:/etc/apache -v ~/Desktop/ROServer/etc-mysql:/etc/mysql -v ~/Desktop/ROServer/etc-php:/etc/php -v ~/Desktop/ROServer/usr-bin-rathena:/usr/bin/rathena -v ~/Desktop/ROServer/var-lib-mysql:/var/lib/mysql -v ~/Desktop/ROServer/var-www-html:/var/www/html -p 20000:80 -p 20001:443 -p 20002:3306 -p 20003:5121 -p 20004:6121 -p 20005:6900 -e USER=root georgegeorgulasiv/tritogeneia
+# use this container with a command like:
+# docker run -it -p 20000:80 -p 20001:443 -p 20002:3306 -p 20003:5121 -p 20004:6121 -p 20005:6900 -e USER=root georgegeorgulasiv/tritogeneia
