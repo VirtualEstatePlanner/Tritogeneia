@@ -90,14 +90,9 @@
 # chmod the rAthena server binaries and boottime.sh to be executable by anyone
          && chmod a+x /usr/bin/rathena/*-server \
                       /usr/bin/rathena/athena-start \
-                      /boottime.sh /
-         && chmod -R 777 /var/www/html/data/logs \
-         && chmod -R 777 /var/www/html/data/itemshop \
-         && chmod -R 777 /var/www/html/data/tmp \
-         && chown -R 33:33 /var/www/html/data/logs \
-         && chown -R 33:33 /var/www/html/data/itemshop \
-         && chown -R 33:33 /var/www/html/data/tmp \
-
+                      /boottime.sh
+        RUN chmod -R 777 /var/www/html/data \
+         && chown -R 33:33 /var/www/html/data \
 
 # configure apache to use .htaccess
          && a2enmod rewrite \
@@ -121,4 +116,4 @@
 
 # use this container with a command like:
 
-# docker run -it -p 20000:80 -p 20001:443 -p 20002:3306 -p 20003:5121 -p 20004:6121 -p 20005:6900 -e USER=root —name Aegis georgegeorgulasiv/tritogeneia
+# docker run -it -p 20000:80 -p 20001:443 -p 20002:3306 -p 20003:5121 -p 20004:6121 -p 20005:6900 -e USER=root georgegeorgulasiv/tritogeneia
