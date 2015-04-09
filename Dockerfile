@@ -53,10 +53,13 @@
 # add the ‘localhost’ hostname to the apache2 configs
         RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf \
 # clone FluxCP to /var/www/html from github
-         && rm -fr /var/www/html \
-         && git clone https://github.com/rathena/FluxCP.git /var/www/html \
+         && git clone https://github.com/rathena/FluxCP.git /var/www/html/tmp \
+         && cp -R /var/www/html/tmp /var/www/html \
+         && rm -rf /var/www/html/tmp \
 # clone rAthena into /usr/bin/rathena from github
-         && git clone https://github.com/rathena/rathena.git /usr/bin/rathena \
+         && git clone https://github.com/rathena/rathena.git /usr/bin/rathena/tmp \
+         && cp -R /usr/bin/rathena/tmp /usr/bin/rathena \
+         && rm -rf /usr/bin/rathena/tmp \         
 # configure make and select packet version 
          && ./configure --enable-packetver=20131223 \
 # compile rAthena server binaries
