@@ -83,9 +83,9 @@
         ENV PHP_POST_MAX_SIZE 10M
 ### 16
 # Add volumes to be shared to host for configuration file access
-     VOLUME /etc/mysql /var/lib/mysql /usr/bin/rathena/conf
+#     VOLUME /etc/apache2 /etc/mysql /etc/php /usr/bin/rathena /var/lib/mysql /var/www/html 
 ### 17
 # open ports for network access
      EXPOSE 80 443 3306 5121 6121 6900
 # use this container with a command like:
-# docker run -it -p 20000:80 -p 20001:443 -p 20002:3306 -p 20003:5121 -p 20004:6121 -p 20005:6900 -e USER=root georgegeorgulasiv/tritogeneia
+# docker run -it -p 20000:80 -p 20001:443 -p 20002:3306 -p 20003:5121 -p 20004:6121 -p 20005:6900 -v ~/Desktop/ROServer/settings-apache:/etc/apache2 -v ~/Desktop/ROServer/settings-mysql:/etc/mysql -v ~/Desktop/ROServer/settings-php:/etc/php -v ~/Desktop/ROServer/files-rathena:/usr/bin/rathena -v ~/Desktop/ROServer/files-mysql:/var/lib/mysql -v ~/Desktop/ROServer/files-apache:/var/www/html  -e USER=root georgegeorgulasiv/tritogeneia
