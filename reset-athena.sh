@@ -4,4 +4,5 @@
     rsync -az /datastoresetup/etc-mysql /etc/mysql/
     rsync -az /datastoresetup/usr-bin-rathena/ /usr/bin/rathena/
     rsync -az /datastoresetup/var-lib-mysql/ /var/lib/mysql/
-    rsync -az /datastoresetup/var-www-html/ /var/www/html/    echo "rsync complete"
+    rsync -az /datastoresetup/var-www-html/ /var/www/html/
+    echo "rsync complete"
