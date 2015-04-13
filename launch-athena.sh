@@ -3,3 +3,4 @@
     echo "launching rAthena"
     ./athena-start start
     echo "success!"
+    cd /
