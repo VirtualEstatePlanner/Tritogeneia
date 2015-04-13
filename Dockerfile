@@ -37,7 +37,6 @@
          && service mysql start \
          && mysql < /import.sql \
          && service mysql stop \
-         && rm -f /import.sql \
          && apt-get -yqq remove gcc git make \
          && apt-get -yqq autoremove \
          && chmod a+x /usr/bin/rathena/*-server \
