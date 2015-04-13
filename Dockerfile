@@ -7,6 +7,10 @@
         ADD import.sql /
         ADD 000-default.conf /
         ADD my.cnf /
+        ADD launch-athena.sh /
+        ADD reset-athena.sh /
+        ADD backup-athena.sh /
+        ADD import-athena.sh /
     WORKDIR /usr/bin/rathena/		
         RUN apt-get update \
          && apt-get -yqq dist-upgrade \
@@ -38,23 +42,23 @@
          && apt-get -yqq autoremove \
          && chmod a+x /usr/bin/rathena/*-server \
          && chmod a+x /usr/bin/rathena/athena-start \
-         && chmod a+x /boottime.sh \
+         && chmod a+x /*.sh \
          && chmod -R 777 /var/www/html/data \
          && chown -R 33:33 /var/www/html/data \
          && a2enmod rewrite \
-         && mkdir /datastore/ \
-         && mkdir /datastore/etc-apache2/ \
-         && mkdir /datastore/etc-mysql/ \
-         && mkdir /datastore/usr-bin-rathena/ \
-         && mkdir /datastore/var-lib-mysql/ \
-         && mkdir /datastore/var-www-html/ \
+         && mkdir /datastoresetup/ \
+         && mkdir /datastoresetup/etc-apache2/ \
+         && mkdir /datastoresetup/etc-mysql/ \
+         && mkdir /datastoresetup/usr-bin-rathena/ \
+         && mkdir /datastoresetup/var-lib-mysql/ \
+         && mkdir /datastoresetup/var-www-html/ \
          && mv -f /000-default.conf /etc/apache2/sites-available/ \
          && mv -f /my.cnf /etc/mysql/conf.d/ \
-         && rsync -az /etc/apache2/ /datastore/etc-apache2/ \
-         && rsync -az /etc/mysql/ /datastore/etc-mysql/ \
-         && rsync -az /usr/bin/rathena/ /datastore/usr-bin-rathena/ \
-         && rsync -az /var/lib/mysql/ /datastore/var-lib-mysql/ \
-         && rsync -az /var/www/html/ /datastore/var-www-html/
+         && rsync -az /etc/apache2/ /datastoresetup/etc-apache2/ \
+         && rsync -az /etc/mysql/ /datastoresetup/etc-mysql/ \
+         && rsync -az /usr/bin/rathena/ /datastoresetup/usr-bin-rathena/ \
+         && rsync -az /var/lib/mysql/ /datastoresetup/var-lib-mysql/ \
+         && rsync -az /var/www/html/ /datastoresetup/var-www-html/
         ENV DEBIAN_FRONTEND interactive
      EXPOSE 80 443 3306 5121 6121 6900
         ENV PHP_UPLOAD_MAX_FILESIZE 10M
