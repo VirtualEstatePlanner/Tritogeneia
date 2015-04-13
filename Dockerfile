@@ -11,19 +11,19 @@
         RUN apt-get update \
          && apt-get -yqq dist-upgrade \
          && apt-get -yqq --force-yes install apache2 \
-         && apt-get -yqq --force-yes install gcc \
-         && apt-get -yqq --force-yes install git \
-         && apt-get -yqq --force-yes install libapache2-mod-php5 \
-         && apt-get -yqq --force-yes install libmysqlclient-dev \
-         && apt-get -yqq --force-yes install libpcre3-dev \
-         && apt-get -yqq --force-yes install make \
-         && apt-get -yqq --force-yes install mysql-client \
-         && apt-get -yqq --force-yes install mysql-server \
-         && apt-get -yqq --force-yes install php5-mysql \
-         && apt-get -yqq --force-yes install php-apc \
-         && apt-get -yqq --force-yes install php5-mcrypt \
-         && apt-get -yqq --force-yes install rsync \
-         && apt-get -yqq --force-yes install zlib1g-dev \
+                                             gcc \
+                                             git \
+                                             libapache2-mod-php5 \
+                                             libmysqlclient-dev \
+                                             libpcre3-dev \
+                                             make \
+                                             mysql-client \
+                                             mysql-server \
+                                             php5-mysql \
+                                             php-apc \
+                                             php5-mcrypt \
+                                             rsync \
+                                             zlib1g-dev \
          && echo "ServerName localhost" >> /etc/apache2/apache2.conf \
          && rm -rf /var/www/html \
          && git clone https://github.com/rathena/FluxCP.git /var/www/html \
