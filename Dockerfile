@@ -13,6 +13,13 @@
         ADD import-athena.sh /
     WORKDIR /usr/bin/rathena/		
         RUN apt-get update \
+         && mkdir /datastore/ \
+         && mkdir /datastoresetup/ \
+         && mkdir /datastoresetup/etc-apache2/ \
+         && mkdir /datastoresetup/etc-mysql/ \
+         && mkdir /datastoresetup/usr-bin-rathena/ \
+         && mkdir /datastoresetup/var-lib-mysql/ \
+         && mkdir /datastoresetup/var-www-html/ \
          && apt-get -yqq dist-upgrade \
          && apt-get -yqq --force-yes install apache2 \
                                              gcc \
@@ -44,13 +51,9 @@
          && chmod a+x /*.sh \
          && chmod -R 777 /var/www/html/data \
          && chown -R 33:33 /var/www/html/data \
+         && chmod -R 777 /datastore \
+         && chown -R 33:33 /datastore \
          && a2enmod rewrite \
-         && mkdir /datastoresetup/ \
-         && mkdir /datastoresetup/etc-apache2/ \
-         && mkdir /datastoresetup/etc-mysql/ \
-         && mkdir /datastoresetup/usr-bin-rathena/ \
-         && mkdir /datastoresetup/var-lib-mysql/ \
-         && mkdir /datastoresetup/var-www-html/ \
          && mv -f /000-default.conf /etc/apache2/sites-available/ \
          && mv -f /my.cnf /etc/mysql/conf.d/ \
          && rsync -az /etc/apache2/ /datastoresetup/etc-apache2/ \
@@ -59,6 +62,7 @@
          && rsync -az /var/lib/mysql/ /datastoresetup/var-lib-mysql/ \
          && rsync -az /var/www/html/ /datastoresetup/var-www-html/
         ENV DEBIAN_FRONTEND interactive
+    WORKDIR /
      EXPOSE 80 443 3306 5121 6121 6900
      VOLUME /datastore/
      VOLUME /etc/apache2/
@@ -71,4 +75,4 @@
         CMD bash
  ENTRYPOINT /boottime.sh
 
-# docker run -it -p 20000:80 -p 20001:443 -p 20002:3306 -p 20003:5121 -p 20004:6121 -p 20005:6900 -v /datastore/etc-apache2:/etc/apache2 -v /datastore/etc-mysql:/etc/mysql -v /datastore/usr-bin-rathena:/usr/bin/rathena -v /datastore/var-lib-mysql:/var/lib/mysql -v /datastore/var-www-html:/var/www/html -e USER=root georgegeorgulasiv/tritogeneia
+# docker run -it -p 20000:80 -p 20001:443 -p 20002:3306 -p 20003:5121 -p 20004:6121 -p 20005:6900 -v /Users/admingg4/Desktop/datastore/:/datastore/ -v /Users/admingg4/Desktop/datastore/etc-apache2/:/datastore/etc/apache2/ -v /Users/admingg4/Desktop/datastore/etc-mysql/:/datastore/etc/mysql/ -v /Users/admingg4/Desktop/datastore/usr-bin-rathena/:/datastore/usr/bin/rathena/ -v /Users/admingg4/Desktop/datastore/var-lib-mysql/:/datastore/var/lib/mysql/ --name AegisMac georgegeorgulasiv/tritogeneia
