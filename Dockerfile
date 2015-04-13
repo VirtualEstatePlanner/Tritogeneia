@@ -14,6 +14,11 @@
     WORKDIR /usr/bin/rathena/		
         RUN apt-get update \
          && mkdir /datastore/ \
+         && mkdir /datastore/etc-apache2/ \
+         && mkdir /datastore/etc-mysql/ \
+         && mkdir /datastore/usr-bin-rathena/ \
+         && mkdir /datastore/var-lib-mysql/ \
+         && mkdir /datastore/var-www-html/ \
          && mkdir /datastoresetup/ \
          && mkdir /datastoresetup/etc-apache2/ \
          && mkdir /datastoresetup/etc-mysql/ \
