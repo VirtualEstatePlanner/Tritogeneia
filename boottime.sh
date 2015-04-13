@@ -9,9 +9,6 @@ sed -ri -e "s/^upload_max_filesize.*/upload_max_filesize = ${PHP_UPLOAD_MAX_FILE
     echo "launching mysql"
     service mysql start
     echo "success!"
-    echo "importing default database"
-    mysql < /import.sql
-    echo "success!"
 
 while [ 1 ]; do
     /bin/bash

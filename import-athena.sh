@@ -6,3 +6,6 @@
     rsync -az /datastore/var-lib-mysql/ /var/lib/mysql/
     rsync -az /datastore/var-www-html/ /var/www/html/
     echo "rsync complete"
+    echo "importing default database"
+    mysql < /import.sql
+    echo "success!"

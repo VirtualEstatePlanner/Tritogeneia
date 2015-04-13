@@ -61,12 +61,12 @@
          && rsync -az /var/www/html/ /datastoresetup/var-www-html/
         ENV DEBIAN_FRONTEND interactive
      EXPOSE 80 443 3306 5121 6121 6900
-     VOLUME /datastore/ \
-     VOLUME /etc/apache2/ \
-     VOLUME /atc/mysql/ \
-     VOLUME /usr/bin/rathena/ \
-     VOLUME /var/lib/mysql/ \
-     VOLUME /var/www/html/ \
+     VOLUME /datastore/
+     VOLUME /etc/apache2/
+     VOLUME /atc/mysql/
+     VOLUME /usr/bin/rathena/
+     VOLUME /var/lib/mysql/
+     VOLUME /var/www/html/
         ENV PHP_UPLOAD_MAX_FILESIZE 10M
         ENV PHP_POST_MAX_SIZE 10M
         CMD bash
