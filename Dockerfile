@@ -1,4 +1,4 @@
-       FROM ubuntu:latest
+       FROM ubuntu:latest 
  MAINTAINER George Georgulas IV <georgegeorgulasiv@gmail.com>
         ENV DEBIAN_FRONTEND noninteractive
        USER root

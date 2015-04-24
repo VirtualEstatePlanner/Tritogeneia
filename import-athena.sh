@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
     echo "copying initial files to host volume at /datastore/"
     rsync -az /datastore/etc-apache2/ /etc/apache2/
     rsync -az /datastore/etc-mysql/ /etc/mysql/

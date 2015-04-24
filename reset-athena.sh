@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash 
     echo "creating new server from /datastoresetup/"
     rsync -az /datastoresetup/etc-apache2/ /etc/apache2/
     rsync -az /datastoresetup/etc-mysql/ /etc/mysql/
