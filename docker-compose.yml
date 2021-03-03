@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+
+ rathena:
+  image: georgegeorgulasiv/rathena:latest
+  
+ fluxcp:
+  image: georgegeorgulasiv/fluxcp:latest
+
+ client:
+  image: georgegeorgulasiv/openkore:latest
+
+ mariadb:
+  image: mariadb:latest
+  
+ php:
+  image: php:8.0-fpm-alpine

@@ -1,4 +1,3 @@
 .DS_Store
-mounts
-old
-original
+zhistory
+zpersistence
